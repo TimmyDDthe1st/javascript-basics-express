@@ -1,7 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const strings = require('../lib/strings');
-const numbers = require('../lib/numbers');
+const strings = require('./lib/strings');
+const numbers = require('./lib/numbers');
+const booleans = require('./lib/booleans');
 
 const success = 200;
 const fail = 400;
@@ -12,7 +13,6 @@ app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 function isInteger(a, b, res, message) {
-  // eslint-disable-next-line no-restricted-globals
   if (isNaN(a) || isNaN(b)) {
     res.status(fail).json({ error: message });
   }
@@ -101,6 +101,36 @@ app.post('/numbers/remainder', (req, res) => {
   } else if (isInteger(a, b, res, 'Parameters must be valid numbers.')) {
     res.status(success).json({ result: numbers.remainder(a, b) });
   }
+});
+
+app.post('/booleans/negate', (req, res) => {
+  const { value } = req.body;
+  res.status(success).json({ result: booleans.negate(value) });
+});
+
+app.post('/booleans/truthiness', (req, res) => {
+  const { value } = req.body;
+
+  res.status(success).json({ result: booleans.truthiness(value) });
+});
+
+app.get('/booleans/is-odd/:param1', (req, res) => {
+  const value = req.params.param1;
+
+  isInteger(value, value, res, 'Parameter must be a number.');
+
+  res.status(success).json({ result: booleans.isOdd(value) });
+});
+
+app.get('/booleans/:param1/starts-with/:param2', (req, res) => {
+  const string = req.params.param1;
+  const character = req.params.param2;
+
+  if (character.length > 1) {
+    res.status(fail).json({ error: 'Parameter "character" must be a single character.' });
+  }
+
+  res.status(success).json({ result: booleans.startsWith(character, string) });
 });
 
 module.exports = app;
