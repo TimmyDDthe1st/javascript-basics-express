@@ -3,7 +3,7 @@ const app = require('../src/app');
 
 describe('/numbers', () => {
   describe('GET /add/{number}/and/{number}', () => {
-    xit('adds 2 and 1', done => {
+    it('adds 2 and 1', done => {
       request(app)
         .get('/numbers/add/2/and/1')
         .then(res => {
@@ -13,7 +13,7 @@ describe('/numbers', () => {
         });
     });
 
-    xit('adds 12 and 0', done => {
+    it('adds 12 and 0', done => {
       request(app)
         .get('/numbers/add/12/and/0')
         .then(res => {
@@ -23,7 +23,7 @@ describe('/numbers', () => {
         });
     });
 
-    xit('adds 10 and -5', done => {
+    it('adds 10 and -5', done => {
       request(app)
         .get('/numbers/add/10/and/-5')
         .then(res => {
@@ -33,9 +33,29 @@ describe('/numbers', () => {
         });
     });
 
-    xit('errors if the parameters are not numbers', done => {
+    it('errors if the parameters are not numbers', done => {
       request(app)
         .get('/numbers/add/fish/and/chips')
+        .then(res => {
+          expect(res.status).toEqual(400);
+          expect(res.body).toEqual({ error: 'Parameters must be valid numbers.' });
+          done();
+        });
+    });
+
+    it('errors if the parameters are not numbers', done => {
+      request(app)
+        .get('/numbers/add/1/and/chips')
+        .then(res => {
+          expect(res.status).toEqual(400);
+          expect(res.body).toEqual({ error: 'Parameters must be valid numbers.' });
+          done();
+        });
+    });
+
+    it('errors if the parameters are not numbers', done => {
+      request(app)
+        .get('/numbers/add/lol/and/5')
         .then(res => {
           expect(res.status).toEqual(400);
           expect(res.body).toEqual({ error: 'Parameters must be valid numbers.' });
@@ -45,7 +65,7 @@ describe('/numbers', () => {
   });
 
   describe('GET /subtract/{number}/from/{number}', () => {
-    xit('subtracts 2 from 1', done => {
+    it('subtracts 2 from 1', done => {
       request(app)
         .get('/numbers/subtract/2/from/1')
         .then(res => {
@@ -55,7 +75,7 @@ describe('/numbers', () => {
         });
     });
 
-    xit('subtracts -2 from 1', done => {
+    it('subtracts -2 from 1', done => {
       request(app)
         .get('/numbers/subtract/-2/from/1')
         .then(res => {
@@ -65,7 +85,7 @@ describe('/numbers', () => {
         });
     });
 
-    xit('errors if the parameters are not numbers', done => {
+    it('errors if the parameters are not numbers', done => {
       request(app)
         .get('/numbers/subtract/fish/from/chips')
         .then(res => {
@@ -77,7 +97,7 @@ describe('/numbers', () => {
   });
 
   describe('POST /multiply', () => {
-    xit('multiplies two numbers', done => {
+    it('multiplies two numbers', done => {
       request(app)
         .post('/numbers/multiply')
         .send({ a: 10, b: 3 })
@@ -88,7 +108,7 @@ describe('/numbers', () => {
         });
     });
 
-    xit('multiplies stringified numbers', done => {
+    it('multiplies stringified numbers', done => {
       request(app)
         .post('/numbers/multiply')
         .send({ a: '-4', b: '-9' })
@@ -99,7 +119,7 @@ describe('/numbers', () => {
         });
     });
 
-    xit('errors if a parameter is missing', done => {
+    it('errors if a parameter is missing', done => {
       request(app)
         .post('/numbers/multiply')
         .send({ a: 'fish' })
@@ -110,7 +130,7 @@ describe('/numbers', () => {
         });
     });
 
-    xit('errors if the parameters are not numbers', done => {
+    it('errors if the parameters are not numbers', done => {
       request(app)
         .post('/numbers/multiply')
         .send({ a: 'fish', b: 'chips' })
@@ -120,10 +140,32 @@ describe('/numbers', () => {
           done();
         });
     });
+
+    it('errors if a is a number and b is not a number', done => {
+      request(app)
+        .post('/numbers/multiply')
+        .send({ a: 1, b: 'chips' })
+        .then(res => {
+          expect(res.status).toEqual(400);
+          expect(res.body).toEqual({ error: 'Parameters "a" and "b" must be valid numbers.' });
+          done();
+        });
+    });
+
+    it('errors if b is a number and a is not a number', done => {
+      request(app)
+        .post('/numbers/multiply')
+        .send({ a: 'lol', b: 4 })
+        .then(res => {
+          expect(res.status).toEqual(400);
+          expect(res.body).toEqual({ error: 'Parameters "a" and "b" must be valid numbers.' });
+          done();
+        });
+    });
   });
 
   describe('POST /divide', () => {
-    xit('divides two numbers', done => {
+    it('divides two numbers', done => {
       request(app)
         .post('/numbers/divide')
         .send({ a: 162, b: 3 })
@@ -134,7 +176,7 @@ describe('/numbers', () => {
         });
     });
 
-    xit('divides stringified numbers', done => {
+    it('divides stringified numbers', done => {
       request(app)
         .post('/numbers/divide')
         .send({ a: '-4', b: '8' })
@@ -145,7 +187,7 @@ describe('/numbers', () => {
         });
     });
 
-    xit('divides 0 by a number', done => {
+    it('divides 0 by a number', done => {
       request(app)
         .post('/numbers/divide')
         .send({ a: 0, b: 10 })
@@ -156,7 +198,7 @@ describe('/numbers', () => {
         });
     });
 
-    xit('errors if dividing by 0', done => {
+    it('errors if dividing by 0', done => {
       request(app)
         .post('/numbers/divide')
         .send({ a: 10, b: 0 })
@@ -167,7 +209,7 @@ describe('/numbers', () => {
         });
     });
 
-    xit('errors if a parameter is missing', done => {
+    it('errors if a parameter is missing', done => {
       request(app)
         .post('/numbers/divide')
         .send({ a: 'fish' })
@@ -178,7 +220,7 @@ describe('/numbers', () => {
         });
     });
 
-    xit('errors if the parameters are not numbers', done => {
+    it('errors if the parameters are not numbers', done => {
       request(app)
         .post('/numbers/divide')
         .send({ a: 'fish', b: 'chips' })
@@ -190,11 +232,11 @@ describe('/numbers', () => {
     });
   });
 
-  describe('GET /remainder?a={number}&b={number}', () => {
-    xit('gives the remainder of dividing 18 by 5', done => {
+  describe('POST /remainder?a={number}&b={number}', () => {
+    it('gives the remainder of dividing 18 by 5', done => {
       request(app)
         .post('/numbers/remainder')
-        .query({ a: 18, b: 5 })
+        .send({ a: 18, b: 5 })
         .then(res => {
           expect(res.status).toEqual(200);
           expect(res.body).toEqual({ result: 3 });
@@ -202,7 +244,7 @@ describe('/numbers', () => {
         });
     });
 
-    xit('gives the remainder of dividing -4 by 8', done => {
+    it('gives the remainder of dividing -4 by 8', done => {
       request(app)
         .post('/numbers/remainder')
         .send({ a: '-4', b: '8' })
@@ -213,9 +255,9 @@ describe('/numbers', () => {
         });
     });
 
-    xit('gives the remainder of dividing 0 by a number', done => {
+    it('gives the remainder of dividing 0 by a number', done => {
       request(app)
-        .post('/numbers/remainer')
+        .post('/numbers/remainder')
         .send({ a: 0, b: 10 })
         .then(res => {
           expect(res.status).toEqual(200);
@@ -224,7 +266,7 @@ describe('/numbers', () => {
         });
     });
 
-    xit('errors if dividing by 0', done => {
+    it('errors if dividing by 0', done => {
       request(app)
         .post('/numbers/remainder')
         .send({ a: 10, b: 0 })
@@ -235,7 +277,7 @@ describe('/numbers', () => {
         });
     });
 
-    xit('errors if a parameter is missing', done => {
+    it('errors if a parameter is missing', done => {
       request(app)
         .post('/numbers/remainder')
         .send({ a: 'fish' })
@@ -246,7 +288,7 @@ describe('/numbers', () => {
         });
     });
 
-    xit('errors if the parameters are not numbers', done => {
+    it('errors if the parameters are not numbers', done => {
       request(app)
         .post('/numbers/remainder')
         .send({ a: 'fish', b: 'chips' })
