@@ -1,8 +1,7 @@
 const { negate, truthiness, isOdd, startsWith } = require('../lib/booleans');
-const { isInteger, hasParameters } = require('../helpers/numbersHelpers');
+const { isInteger } = require('../helpers/numbersHelpers');
 
-const success = 200;
-const fail = 400;
+const { success, fail } = require('../helpers/statusCodes.json');
 
 exports.negate = (req, res) => {
   const { value } = req.body;

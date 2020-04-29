@@ -1,8 +1,7 @@
 const { add, subtract, multiply, divide, remainder } = require('../lib/numbers');
 const { isInteger, hasParameters } = require('../helpers/numbersHelpers');
 
-const success = 200;
-const fail = 400;
+const { success, fail } = require('../helpers/statusCodes.json');
 
 exports.numbersAdd = (req, res) => {
   const a = parseInt(req.params.param1, 10);

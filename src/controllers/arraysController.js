@@ -6,7 +6,7 @@ const {
   removeNthElement2,
 } = require('../lib/arrays');
 
-const success = 200;
+const { success } = require('../helpers/statusCodes.json');
 
 exports.elementAtIndex = (req, res) => {
   const { array } = req.body;

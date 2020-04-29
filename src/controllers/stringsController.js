@@ -6,7 +6,7 @@ const {
   firstCharacters,
 } = require('../lib/strings');
 
-const success = 200;
+const { success } = require('../helpers/statusCodes.json');
 
 exports.stringsSayHello = (req, res) => {
   res.status(success).json({ result: sayHello(req.params.param1) });
