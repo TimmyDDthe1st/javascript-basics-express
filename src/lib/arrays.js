@@ -7,7 +7,7 @@ const arrayToCSVString = array => {
 };
 
 const csvStringToArray = string => {
-  return string.split(",");
+  return string.split(',');
 };
 
 const addToArray = (element, array) => {
@@ -34,9 +34,9 @@ const uppercaseWordsInArray = strings => {
 const reverseWordsInArray = strings => {
   return strings.map(string =>
     string
-      .split("")
+      .split('')
       .reverse()
-      .join("")
+      .join(''),
   );
 };
 
@@ -45,7 +45,9 @@ const onlyEven = numbers => {
 };
 
 const removeNthElement2 = (index, array) => {
-  return array.slice(0, index).concat(array.slice(index + 1));
+  const newArray = [...array];
+  newArray.splice(index, 1);
+  return newArray;
 };
 
 const elementsStartingWithAVowel = strings => {
@@ -53,7 +55,7 @@ const elementsStartingWithAVowel = strings => {
 };
 
 const removeSpaces = string => {
-  return string.split(" ").join("");
+  return string.split(' ').join('');
 };
 
 const sumNumbers = numbers => {
@@ -61,9 +63,7 @@ const sumNumbers = numbers => {
 };
 
 const sortByLastLetter = strings => {
-  return strings.sort(
-    (a, b) => a.charCodeAt(a.length - 1) - b.charCodeAt(b.length - 1)
-  );
+  return strings.sort((a, b) => a.charCodeAt(a.length - 1) - b.charCodeAt(b.length - 1));
 };
 
 module.exports = {
@@ -81,5 +81,5 @@ module.exports = {
   elementsStartingWithAVowel,
   removeSpaces,
   sumNumbers,
-  sortByLastLetter
+  sortByLastLetter,
 };

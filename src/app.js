@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const strings = require('./lib/strings');
 const numbers = require('./lib/numbers');
 const booleans = require('./lib/booleans');
+const arrays = require('./lib/arrays');
 
 const success = 200;
 const fail = 400;
@@ -13,6 +14,7 @@ app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 function isInteger(a, b, res, message) {
+  // eslint-disable-next-line no-restricted-globals
   if (isNaN(a) || isNaN(b)) {
     res.status(fail).json({ error: message });
   }
@@ -131,6 +133,39 @@ app.get('/booleans/:param1/starts-with/:param2', (req, res) => {
   }
 
   res.status(success).json({ result: booleans.startsWith(character, string) });
+});
+
+app.post('/arrays/element-at-index/:param1', (req, res) => {
+  const { array } = req.body;
+  const index = req.params.param1;
+
+  res.status(success).json({ result: arrays.getNthElement(index, array) });
+});
+
+app.post('/arrays/to-string', (req, res) => {
+  const { array } = req.body;
+
+  res.status(success).json({ result: arrays.arrayToCSVString(array) });
+});
+
+app.post('/arrays/append', (req, res) => {
+  const { array } = req.body;
+  const { value } = req.body;
+
+  res.status(success).json({ result: arrays.addToArray2(value, array) });
+});
+
+app.post('/arrays/starts-with-vowel', (req, res) => {
+  const { array } = req.body;
+
+  res.status(success).json({ result: arrays.elementsStartingWithAVowel(array) });
+});
+
+app.post('/arrays/remove-element', (req, res) => {
+  const { array } = req.body;
+  const { index } = req.query || 0;
+
+  res.status(success).json({ result: arrays.removeNthElement2(index, array) });
 });
 
 module.exports = app;
